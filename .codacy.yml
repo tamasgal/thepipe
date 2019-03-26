@@ -7,4 +7,4 @@ engines:
    disable:
      - F999
 exclude_paths:
-  - '**/tests/**' 
+  - 'thepipe/tests' 
