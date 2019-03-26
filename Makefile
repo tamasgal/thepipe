@@ -11,10 +11,10 @@ install-dev:
 	pip install -e .
 
 test: 
-	py.test --junitxml=./reports/junit.xml $(PKGNAME)
+	py.test $(PKGNAME)
 
 test-cov:
-	py.test --cov ./ --cov-report term-missing --cov-report xml:reports/coverage.xml --cov-report html:reports/coverage $(PKGNAME)
+	py.test --cov ./ --cov-report term-missing $(PKGNAME)
 
 test-loop: 
 	py.test $(PKGNAME)
