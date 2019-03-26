@@ -14,7 +14,7 @@ test:
 	py.test $(PKGNAME)
 
 test-cov:
-	py.test --cov ./
+	py.test --cov=$(PKGNAME)
 
 test-loop: 
 	py.test $(PKGNAME)
