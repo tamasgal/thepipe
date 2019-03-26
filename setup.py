@@ -17,7 +17,7 @@ builtins.__THEPIPE_SETUP__ = True
 with open('requirements.txt') as fobj:
     requirements = [l.strip() for l in fobj.readlines()]
 
-with open("README.md", "r") as fh:
+with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setup(
