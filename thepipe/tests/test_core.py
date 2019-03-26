@@ -422,6 +422,15 @@ class TestPipeline(TestCase):
         args, kwargs = log_mock.warning.call_args_list[0]
         assert 'b' == args[1]
 
+    def test_timeit(TestCase):
+        pl = Pipeline(timeit=True)
+
+        class A(Module):
+            pass
+
+        pl.attach(A)
+        pl.drain(3)
+
 
 class TestPipelineConfigurationViaFile(TestCase):
     """Auto-configuration of pipelines using TOML files"""
