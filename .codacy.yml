@@ -6,5 +6,3 @@ engines:
  pyflakes:
    disable:
      - F999
-exclude_paths:
-  - 'thepipe/tests' 
