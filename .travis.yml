@@ -11,7 +11,7 @@ python:
 
 install:
   - pip install -Ur requirements.txt
-  - make install
+  - make install-dev
 
 script:
   - make test-cov
