@@ -7,7 +7,7 @@ integrated into existing (analysis) chains and workflows.
 
 ## Installation
 
-```
+```shell
 pip install thepipe
 ```
 
