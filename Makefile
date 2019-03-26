@@ -14,7 +14,7 @@ test:
 	py.test $(PKGNAME)
 
 test-cov:
-	py.test --cov ./ --cov-report term-missing $(PKGNAME)
+	py.test --cov ./
 
 test-loop: 
 	py.test $(PKGNAME)
