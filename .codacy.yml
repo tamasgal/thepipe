@@ -6,3 +6,7 @@ engines:
  pyflakes:
    disable:
      - F999
+ duplication:
+   enabled: true
+   exclude_paths:
+     - '**/tests/**'
