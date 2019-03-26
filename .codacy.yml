@@ -9,4 +9,4 @@ engines:
  duplication:
    enabled: true
    exclude_paths:
-     - '**/tests/**'
+     - '**/tests/*'
