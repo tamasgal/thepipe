@@ -6,7 +6,6 @@ The logging facility.
 """
 from hashlib import sha256
 from inspect import getframeinfo, stack
-import socket
 import logging
 
 from .tools import colored, supports_color
@@ -80,14 +79,14 @@ def get_logger(name):
     logger.propagate = False
 
     if supports_color():
-        pre1, suf1 = hash_coloured_escapes(name)
-        pre2, suf2 = hash_coloured_escapes(name + 'salt')
+        prefix_1, suffix = hash_coloured_escapes(name)
+        prefix_2, _ = hash_coloured_escapes(name + 'salt')
     else:
-        pre1, suf1, pre2, suf2 = ('', '', '', '')
+        prefix_1, prefix_2, suffix = ('', '', '')
 
     formatter = logging.Formatter('%(levelname)s {}+{}+{} '
                                   '%(name)s: %(message)s'.format(
-                                      pre1, pre2, suf1))
+                                      prefix_1, prefix_2, suffix))
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)
     logger.addHandler(ch)
@@ -113,9 +112,9 @@ def get_printer(name, color=None, ansi_code=None, force_color=False):
 
     if force_color or supports_color():
         if color is None and ansi_code is None:
-            cpre_1, csuf_1 = hash_coloured_escapes(name)
-            cpre_2, csuf_2 = hash_coloured_escapes(name + 'salt')
-            name = cpre_1 + '+' + cpre_2 + '+' + csuf_1 + ' ' + name
+            cprefix_1, csuffix = hash_coloured_escapes(name)
+            cprefix_2, _ = hash_coloured_escapes(name + 'salt')
+            name = cprefix_1 + '+' + cprefix_2 + '+' + csuffix + ' ' + name
         else:
             name = colored(name, color=color, ansi_code=ansi_code)
 
