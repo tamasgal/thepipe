@@ -635,8 +635,7 @@ class TestModule(TestCase):
 
     def test_default_parameter_value_can_be_overwritten(self):
         class Foo(Module):
-            def __init__(self, **context):
-                super(self.__class__, self).__init__(**context)
+            def configure(self):
                 self.foo = self.get('foo') or 'default_foo'
 
         module = Foo()
