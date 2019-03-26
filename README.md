@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e1c10c17b4224655aa2d9bd61b488589)](https://app.codacy.com/app/tamasgal/thepipe?utm_source=github.com&utm_medium=referral&utm_content=tamasgal/thepipe&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/tamasgal/thepipe.svg?branch=master)](https://travis-ci.org/tamasgal/thepipe)
 [![codecov.io](http://codecov.io/github/tamasgal/thepipe/coverage.svg?branch=master)](http://codecov.io/github/tamasgal/thepipe?branch=master)
 
