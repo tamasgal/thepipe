@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/tamasgal/thepipe.svg?branch=master)](https://travis-ci.org/tamasgal/thepipe)
 [![codecov.io](http://codecov.io/github/tamasgal/thepipe/coverage.svg?branch=master)](http://codecov.io/github/tamasgal/thepipe?branch=master)
 
-
 # thepipe
 A simplistic, general purpose pipeline framework, which can easily be
 integrated into existing (analysis) chains and workflows.
@@ -57,7 +56,7 @@ pipe.drain()
 
 This will produce the following output:
 
-```
+```shell
 ++ AModule: Configuring AModule
 Pipeline and module initialisation took 0.000s (CPU 0.000s).
 ++ AModule: This is cycle #0
