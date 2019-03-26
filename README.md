@@ -19,7 +19,7 @@ some parameters and drain the pipeline.
 Note that pipeline modules can either be vanilla (univariate) Python functions
 or Classes which derive from `thepipe.Module`. 
 
-```
+```python
 import thepipe as tp
 
 
