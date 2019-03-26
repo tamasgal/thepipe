@@ -1,12 +1,2 @@
----
-engines:
- pylint:
-   enabled: true
-   python_version: 3
- pyflakes:
-   disable:
-     - F999
- duplication:
-   enabled: true
-   exclude_paths:
-     - 'tests/*'
+exclude_paths:
+  - '**/tests/*'
