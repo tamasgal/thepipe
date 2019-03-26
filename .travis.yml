@@ -13,7 +13,7 @@ install:
   - make install
 
 script:
-  - make test
+  - make test-cov
 
 after_success:
   - codecov
