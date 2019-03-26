@@ -1,4 +1,7 @@
+sudo: false
+
 language: python
+
 python:
   - "3.5"
   - "3.5-dev"
@@ -11,3 +14,6 @@ install:
 
 script:
   - make test
+
+after_success:
+  - codecov
