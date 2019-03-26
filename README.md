@@ -1,6 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/20a35727ae364e08845b60bdeb4b233a)](https://www.codacy.com/app/tamasgal/thepipe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tamasgal/thepipe&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/tamasgal/thepipe.svg?branch=master)](https://travis-ci.org/tamasgal/thepipe)
 [![codecov.io](http://codecov.io/github/tamasgal/thepipe/coverage.svg?branch=master)](http://codecov.io/github/tamasgal/thepipe?branch=master)
+[!PyPI Package latest release](https://img.shields.io/pypi/v/thepipe.svg?style=flat)](https://pypi.python.org/pypi/thepipe)
 
 # thepipe
 A simplistic, general purpose pipeline framework, which can easily be
