@@ -22,6 +22,7 @@ integrated into existing (analysis) chains and workflows.
 
 Installation
 ------------
+``thepipe`` can be installed via ``pip``::
 
     pip install thepipe
 
@@ -32,9 +33,10 @@ Here is a basic example how to create a pipeline, add some modules to it, pass
 some parameters and drain the pipeline.
 
 Note that pipeline modules can either be vanilla (univariate) Python functions
-or Classes which derive from `thepipe.Module`. 
+or Classes which derive from ``thepipe.Module``.
 
-.. highlight:: python
+.. code-block:: python
+
     import thepipe as tp
 
 
@@ -69,9 +71,10 @@ or Classes which derive from `thepipe.Module`.
     pipe.attach(a_function_based_module)
     pipe.drain()
 
-This will produce the following output::
+This will produce the following output:
 
-.. highlight:: shell
+.. code-block:: shell
+
     ++ AModule: Configuring AModule
     Pipeline and module initialisation took 0.000s (CPU 0.000s).
     ++ AModule: This is cycle #0
