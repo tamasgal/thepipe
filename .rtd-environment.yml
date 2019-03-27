@@ -1,0 +1,10 @@
+name: thepipe
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.5*
+  - pip:
+    - "-r .rtd-requirements.txt"
