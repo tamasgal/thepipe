@@ -1,9 +1,9 @@
 include README.rst
 include LICENSE
-include requirements.txt
 include thepipe/version.txt
 
 recursive-include doc *
+recursive-include requirements *
 
 recursive-exclude doc *.pyc
 recursive-exclude doc *.pyo
