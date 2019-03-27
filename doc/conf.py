@@ -39,8 +39,6 @@ sys.path.insert(0, os.path.abspath('.'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.doctest',
-    'sphinx.ext.imgmath',
     'sphinx.ext.viewcode',
     'autoapi.extension',
     'numpydoc',
@@ -137,7 +135,7 @@ html_title = "thepipe {}".format(thepipe.version)
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_static/thepipe.png"
+html_logo = "_static/thepipe-white.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
