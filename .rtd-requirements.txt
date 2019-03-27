@@ -4,7 +4,7 @@ pillow
 pydocstyle
 sphinx-rtd-theme
 sphinx
+sphinx-autoapi
 sphinxcontrib-napoleon
 sphinxcontrib-programoutput
 sphinxcontrib-websupport
-
