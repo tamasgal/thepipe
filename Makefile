@@ -8,6 +8,7 @@ install:
 	pip install .
 
 install-dev:
+	pip install -Ur requirements-dev.txt
 	pip install -e .
 
 test: 

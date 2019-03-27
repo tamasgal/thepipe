@@ -1,5 +1,2 @@
 setuptools_scm
-pytest
-pytest-cov
-codecov
 toml
