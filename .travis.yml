@@ -10,7 +10,7 @@ python:
   - "3.7-dev"
 
 install:
-  - pip install -Ur requirements.txt
+  - pip install -Ur requirements/dev.txt
   - make install-dev
 
 script:
