@@ -1,6 +1,10 @@
 thepipe
 =======
 
+.. image:: https://readthedocs.org/projects/thepipe/badge/?version=latest
+    :target: https://thepipe.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 .. image:: https://api.codacy.com/project/badge/Grade/20a35727ae364e08845b60bdeb4b233a
     :alt: Codacy Badge
     :target: https://www.codacy.com/app/tamasgal/thepipe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tamasgal/thepipe&amp;utm_campaign=Badge_Grade
