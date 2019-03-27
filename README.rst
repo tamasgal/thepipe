@@ -67,9 +67,9 @@ or Classes which derive from ``thepipe.Module``.
 
 
     pipe = tp.Pipeline()
-    pipe.attach(AModule, max_count=5)
+    pipe.attach(AModule, max_count=5)  # pass any parameters to the module
     pipe.attach(a_function_based_module)
-    pipe.drain()
+    pipe.drain()  # without arguments it will drain until a StopIteration is raised
 
 This will produce the following output:
 
