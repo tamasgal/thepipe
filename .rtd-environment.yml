@@ -7,4 +7,4 @@ channels:
 dependencies:
   - python=3.5*
   - pip:
-    - "-r .rtd-requirements.txt"
+    - "-r requirements/doc.txt"

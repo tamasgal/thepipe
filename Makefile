@@ -8,7 +8,7 @@ install:
 	pip install .
 
 install-dev:
-	pip install -Ur requirements-dev.txt
+	pip install -Ur requirements/dev.txt
 	pip install -e .
 
 test: 
@@ -33,7 +33,7 @@ lint:
 	py.test --pylint
 
 dependencies:
-	pip install -Ur requirements.txt
+	pip install -Ur requirements/install.txt
 
 .PHONY: yapf
 yapf:

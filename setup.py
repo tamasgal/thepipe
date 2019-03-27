@@ -14,7 +14,7 @@ except ImportError:
 # so we can detect in __init__.py that it's called from setup.py
 builtins.__THEPIPE_SETUP__ = True
 
-with open('requirements.txt') as fobj:
+with open('requirements/install.txt') as fobj:
     requirements = [l.strip() for l in fobj.readlines()]
 
 with open("README.rst", "r") as fh:
