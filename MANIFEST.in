@@ -1,0 +1,10 @@
+include README.rst
+include LICENSE
+include requirements.txt
+include thepipe/version.txt
+
+recursive-include doc *
+
+recursive-exclude doc *.pyc
+recursive-exclude doc *.pyo
+prune doc/_build
