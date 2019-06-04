@@ -183,16 +183,7 @@ class Pipeline:
         if configfile is None and os.path.exists(MODULE_CONFIGURATION):
             configfile = MODULE_CONFIGURATION
 
-        if configfile is not None:
-            self.print(
-                "Reading module configuration from '{}'".format(configfile))
-            self.log.warning(
-                "Keep in mind that the module configuration file has "
-                "precedence over keyword arguments in the attach method!")
-            with open(configfile, 'r') as fobj:
-                self.module_configuration = toml.load(fobj)
-        else:
-            self.module_configuration = {}
+        self.load_configuration(configfile)
 
         self.init_timer = Timer("Pipeline and module initialisation")
         self.init_timer.start()
@@ -212,6 +203,27 @@ class Pipeline:
         self._stop = False
         self._finished = False
         self.was_interrupted = False
+
+    def load_configuration(self, configfile):
+        if configfile is not None:
+            self.print(
+                "Reading module configuration from '{}'".format(configfile))
+            self.log.warning(
+                "Keep in mind that the module configuration file has "
+                "precedence over keyword arguments in the attach method!")
+            with open(configfile, 'r') as fobj:
+                config = toml.load(fobj)
+            variables = config.pop('VARIABLES', None)
+            if variables is not None:
+                for section, entries in config.items():
+                    for key, value in entries.items():
+                        print(key, value)
+                        if value in variables:
+                            entries[key] = variables[value]
+        else:
+            config = {}
+
+        self.module_configuration = config
 
     def attach(self, module_factory, name=None, **kwargs):
         """Attach a module to the pipeline system"""
