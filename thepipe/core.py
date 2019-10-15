@@ -30,7 +30,6 @@ RESERVED_ARGS = set(['every', 'only_if', 'timeit'])
 
 class Blob(OrderedDict):
     """A simple (ordered) dict with a fancy name. This should hold the data."""
-
     def __init__(self, *args, **kwargs):
         OrderedDict.__init__(self, *args, **kwargs)
         self.log = get_logger("Blob")
@@ -58,7 +57,6 @@ class Blob(OrderedDict):
 
 class Module:
     """The module which can be attached to the pipeline"""
-
     def __init__(self, name=None, **parameters):
         self._name = name
         self.services = ServiceManager()
@@ -77,7 +75,7 @@ class Module:
         self.log = get_logger(self.logger_name)
         self.log.debug("Initialising %s", name)
         self.log.debug("The logger is called '%s'", self.logger_name)
-        self.print = get_printer(self.logger_name)
+        self.cprint = get_printer(self.logger_name)
         self.timeit = self.get('timeit') or False
         self._timeit = {
             'process': deque(maxlen=100000),
@@ -92,10 +90,14 @@ class Module:
 
     def configure(self):
         """Configure module, like instance variables etc."""
-
     def expose(self, obj, name):
         """Expose an object as a service to the Pipeline"""
         self.provided_services[name] = obj
+
+    def print(self, *args, **kwargs):
+        self.log.deprecation(
+            "`Module.print` has been deprecated, please use `cprint` instead!")
+        self.cprint(*args, **kwargs)
 
     @property
     def name(self):
@@ -171,20 +173,19 @@ class Pipeline:
     stats_limit: int, optional [default=100000]
         The number of cycles to keep track of when using `timeit=True`
     """
-
     def __init__(self,
                  blob=None,
                  timeit=False,
                  configfile=None,
                  stats_limit=100000):
         self.log = get_logger(self.__class__.__name__)
-        self.print = get_printer(self.__class__.__name__)
+        self.cprint = get_printer(self.__class__.__name__)
 
         if configfile is None and os.path.exists(MODULE_CONFIGURATION):
             configfile = MODULE_CONFIGURATION
 
         if configfile is not None:
-            self.print(
+            self.cprint(
                 "Reading module configuration from '{}'".format(configfile))
             self.log.warning(
                 "Keep in mind that the module configuration file has "
@@ -477,7 +478,6 @@ class ServiceManager:
     """
     Takes care of pipeline services.
     """
-
     def __init__(self):
         self._services = {}
         self.log = get_logger(self.__class__.__name__)

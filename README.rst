@@ -46,12 +46,12 @@ or Classes which derive from ``thepipe.Module``.
 
     class AModule(tp.Module):
         def configure(self):
-            self.print("Configuring AModule")
+            self.cprint("Configuring AModule")
             self.max_count = self.get("max_count", default=23)
             self.index = 0
 
         def process(self, blob):
-            self.print("This is cycle #%d" % self.index)
+            self.cprint("This is cycle #%d" % self.index)
             blob['index'] = self.index
             self.index += 1
 
@@ -61,7 +61,7 @@ or Classes which derive from ``thepipe.Module``.
             return blob
 
         def finish(self):
-            self.print("I'm done!")
+            self.cprint("I'm done!")
 
 
     def a_function_based_module(blob):
