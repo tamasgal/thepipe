@@ -164,18 +164,14 @@ class ColouredFormatter(logging.Formatter):
         self.secondary_log_colors = secondary_log_colors
         self.reset = reset
 
-    def color(self, log_colors, level_name):
-        """Return escape codes from a ``log_colors`` dict."""
-        return parse_colors(log_colors.get(level_name, ""))
-
     def format(self, record):
         """Format a message from a record object."""
         record = ColoredRecord(record)
-        record.log_color = self.color(self.log_colors, record.levelname)
+        record.log_color = escape_codes(self.log_colors, record.levelname)
 
         if self.secondary_log_colors:
             for name, log_colors in self.secondary_log_colors.items():
-                color = self.color(log_colors, record.levelname)
+                color = escape_codes(log_colors, record.levelname)
                 setattr(record, name + '_log_color', color)
 
         message = super(ColouredFormatter, self).format(record)
@@ -253,6 +249,10 @@ def get_printer(name, color=None, ansi_code=None, force_color=False):
         print(prefix + str(text))
 
     return printer
+
+def escape_codes(self, log_colors, level_name):
+    """Return escape codes from a ``log_colors`` dict."""
+    return parse_colors(log_colors.get(level_name, ""))
 
 
 def hash_coloured(text):

@@ -216,7 +216,7 @@ class Pipeline:
                 config = toml.load(fobj)
             variables = config.pop('VARIABLES', None)
             if variables is not None:
-                for section, entries in config.items():
+                for _, entries in config.items():
                     for key, value in entries.items():
                         print(key, value)
                         if value in variables:
