@@ -250,7 +250,7 @@ def get_printer(name, color=None, ansi_code=None, force_color=False):
 
     return printer
 
-def escape_codes(self, log_colors, level_name):
+def escape_codes(log_colors, level_name):
     """Return escape codes from a ``log_colors`` dict."""
     return parse_colors(log_colors.get(level_name, ""))
 
