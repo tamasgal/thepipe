@@ -1,3 +1,4 @@
 exclude_paths:
   - '**/tests/*'
   - doc/conf.py
+  - thepipe/__init__.py
