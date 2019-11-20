@@ -30,6 +30,19 @@ Installation
 
     pip install thepipe
 
+Features
+--------
+
+- Easy to use interface and integration into existing workflows
+- Modules can be either subclasses of ``Module`` or bare python functions
+- Data is passed via a simple Python dictionary from module to module (wrapped
+  in a class called ``Blob`` which adds some visual candy and error reporting)
+- Integrated hierarchical logging system
+- Colour coded log and print messages (``self.log()`` and ``self.cprint()`` in
+  ``Modules``)
+- Performance statistics for the whole pipeline and each module individually
+- Clean exit when interrupting the pipeline with CTRL+C
+
 The Pipeline
 ------------
 
