@@ -130,6 +130,10 @@ class Module:
         """Add a service requirement with an optional reason"""
         self.required_services[name] = why
 
+    def prepare(self):
+        """Prepare! Executed between configure and the first process"""
+        return
+
     def process(self, blob):  # pylint: disable=R0201
         """Knead the blob and return it"""
         return blob
@@ -389,6 +393,12 @@ class Pipeline:
         if not self._check_service_requirements():
             self.init_timer.stop()
             return self.finish()
+
+        self.log.info("Preparing modules to process")
+        for module in self.modules:
+            if hasattr(module, 'prepare'):
+                self.log.info("Preparing %s" % module.name)
+                module.prepare()
 
         self.init_timer.stop()
         self.log.info("Trapping CTRL+C and starting to drain.")
