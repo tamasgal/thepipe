@@ -58,6 +58,8 @@ class Blob(OrderedDict):
 class Module:
     """The module which can be attached to the pipeline"""
     def __init__(self, name=None, **parameters):
+        if name is None:
+            name = self.__class__.__name__
         self._name = name
         self.services = ServiceManager()
         self.provided_services = {}
