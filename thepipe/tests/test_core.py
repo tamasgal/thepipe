@@ -691,8 +691,8 @@ class TestBlob(TestCase):
             blob['key_c']
 
         args, kwargs = blob.log.error.call_args_list[0]
-        assert "key_c" in args[1]
-        assert "key_a, key_b" == args[2]
+        assert "key_c" in args[0]
+        assert "key_a, key_b" in args[0]
 
 
 class TestServices(TestCase):

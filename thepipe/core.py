@@ -48,9 +48,9 @@ class Blob(OrderedDict):
         try:
             val = OrderedDict.__getitem__(self, key)
         except KeyError:
-            self.log.error(
-                "No key named '%s' found in Blob.\n"
-                "Available keys: %s", key, ', '.join(self.keys()))
+            self.log.error("No key named '%s' found in Blob.\n"
+                           "Available keys: %s" %
+                           (key, ', '.join(self.keys())))
             raise
         return val
 
@@ -411,7 +411,7 @@ class Pipeline:
         finish_blob = Blob()
         for module in self.modules:
             if hasattr(module, 'pre_finish'):
-                self.log.info("Finishing %s", module.name)
+                self.log.info("Finishing %s" % module.name)
                 start_time = timer()
                 start_time_cpu = time.process_time()
                 finish_blob[module.name] = module.pre_finish()
@@ -419,7 +419,7 @@ class Pipeline:
                 self._timeit[module]['finish_cpu'] = \
                     time.process_time() - start_time_cpu
             else:
-                self.log.info("Skipping function module %s", module.name)
+                self.log.info("Skipping function module %s" % module.name)
         self._timeit['finish'] = timer()
         self._timeit['finish_cpu'] = time.process_time()
         self._print_timeit_statistics()
