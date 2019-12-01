@@ -161,6 +161,14 @@ class Module:
         self.log.info("Calling process")
         return self.process(*args, **kwargs)
 
+    def __enter__(self, *args, **kwargs):
+        self.configure(*args, **kwargs)
+        self.prepare()
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        self.pre_finish()
+
 
 class Pipeline:
     """The holy pipeline which holds everything together.
