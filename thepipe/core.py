@@ -6,6 +6,7 @@ The core of thepipe framework.
 """
 from collections import deque, OrderedDict
 import inspect
+import gzip
 import signal
 import os
 import time
@@ -92,6 +93,7 @@ class Module:
 
     def configure(self):
         """Configure module, like instance variables etc."""
+
     def expose(self, obj, name):
         """Expose an object as a service to the Pipeline"""
         self.provided_services[name] = obj
@@ -146,6 +148,20 @@ class Module:
         """Do the last few things before calling finish()"""
         return self.finish()
 
+    def open_file(self, filename, gzipped=False):
+        """Open the file with filename"""
+        try:
+            if gzipped or filename.endswith('.gz'):
+                return gzip.open(filename, 'rb')
+            else:
+                return open(filename, 'rb')
+        except TypeError:
+            self.log.error("Please specify a valid filename.")
+            raise SystemExit
+        except IOError as error_message:
+            self.log.error(error_message)
+            raise SystemExit
+
     def _check_unused_parameters(self):
         """Check if any of the parameters passed in are ignored"""
         all_params = set(self.parameters.keys())
@@ -160,14 +176,6 @@ class Module:
         """Run process if directly called."""
         self.log.info("Calling process")
         return self.process(*args, **kwargs)
-
-    def __enter__(self, *args, **kwargs):
-        self.configure(*args, **kwargs)
-        self.prepare()
-        return self
-
-    def __exit__(self, *args, **kwargs):
-        self.pre_finish()
 
 
 class Pipeline:
