@@ -92,32 +92,32 @@ This will produce the following output:
 
 .. code-block:: shell
 
-    ++ AModule: Configuring AModule
-    Pipeline and module initialisation took 0.000s (CPU 0.000s).
-    ++ AModule: This is cycle #0
+    2020-05-26 12:43:12 ++ AModule: Configuring AModule
+    Pipeline and module initialisation took 0.001s (CPU 0.001s).
+    2020-05-26 12:43:12 ++ AModule: This is cycle #0
     Here is the blob:
     Blob (1 entries):
-     'index' => 0
-    ++ AModule: This is cycle #1
+    'index' => 0
+    2020-05-26 12:43:12 ++ AModule: This is cycle #1
     Here is the blob:
     Blob (1 entries):
-     'index' => 1
-    ++ AModule: This is cycle #2
+    'index' => 1
+    2020-05-26 12:43:12 ++ AModule: This is cycle #2
     Here is the blob:
     Blob (1 entries):
-     'index' => 2
-    ++ AModule: This is cycle #3
+    'index' => 2
+    2020-05-26 12:43:12 ++ AModule: This is cycle #3
     Here is the blob:
     Blob (1 entries):
-     'index' => 3
-    ++ AModule: This is cycle #4
+    'index' => 3
+    2020-05-26 12:43:12 ++ AModule: This is cycle #4
     Here is the blob:
     Blob (1 entries):
-     'index' => 4
-    ++ AModule: This is cycle #5
-    CRITICAL ++ AModule: That's enough...
-    ++ AModule: I'm done!
+    'index' => 4
+    2020-05-26 12:43:12 ++ AModule: This is cycle #5
+    2020-05-26 12:43:12 CRITICAL ++ AModule: That's enough...
+    2020-05-26 12:43:12 ++ AModule: I'm done!
     ============================================================
-    5 cycles drained in 0.000793s (CPU 0.000793s). Memory peak: 20.56 MB
-      wall  mean: 0.000063s  medi: 0.000057s  min: 0.000045s  max: 0.000106s  std: 0.000022s
-      CPU   mean: 0.000065s  medi: 0.000057s  min: 0.000046s  max: 0.000112s  std: 0.000024s
+    5 cycles drained in 0.001284s (CPU 0.001475s). Memory peak: 27.01 MB
+    wall  mean: 0.000070s  medi: 0.000052s  min: 0.000042s  max: 0.000122s  std: 0.000031s
+    CPU   mean: 0.000070s  medi: 0.000052s  min: 0.000042s  max: 0.000124s  std: 0.000032s
