@@ -4,6 +4,7 @@
 The logging facility.
 
 """
+from datetime import datetime
 from hashlib import sha256
 from inspect import getframeinfo, stack
 import logging
@@ -33,6 +34,7 @@ DEPRECATION = 45
 logging.addLevelName(DEPRECATION, "DEPRECATION")
 ONCE = 46
 logging.addLevelName(ONCE, "ONCE")
+DATEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 def deprecation(self, message, *args, **kwargs):
@@ -182,7 +184,7 @@ class ColouredFormatter(logging.Formatter):
         return message
 
 
-def get_logger(name, filename=None, datefmt='%H:%M:%S'):
+def get_logger(name, filename=None, datefmt=DATEFMT):
     """Helper function to get a logger.
 
     If a filename is specified, it will also log to that file."""
@@ -246,7 +248,8 @@ def get_printer(name, color=None, ansi_code=None, force_color=False):
     prefix = name + ': '
 
     def printer(text):
-        print(prefix + str(text))
+        date = datetime.now().strftime(DATEFMT)
+        print(date + ' ' + prefix + str(text))
 
     return printer
 
