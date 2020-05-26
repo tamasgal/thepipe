@@ -4,10 +4,9 @@ language: python
 
 python:
   - "3.5"
-  - "3.5-dev"
   - "3.6"
-  - "3.6-dev"
-  - "3.7-dev"
+  - "3.7"
+  - "3.8"
 
 install:
   - pip install -Ur requirements/dev.txt
