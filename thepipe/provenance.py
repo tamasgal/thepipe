@@ -105,6 +105,20 @@ class Provenance(metaclass=Singleton):
             activity.finish()
             self._backlog.append(activity)
 
+    def record_configuration(self, configuration):
+        """Add configuration parameters (e.g. of the pipeline)"""
+        self.current_activity.add_configuration(configuration)
+
+    def record_input(self, url, comment):
+        self.current_activity.record_input(url, comment)
+
+    def record_output(self, url, comment):
+        self.current_activity.record_output(url, comment)
+
+    @property
+    def current_activity(self):
+        return self._activities[-1]
+
     @property
     def provenance(self):
         return [a.provenance for a in self._backlog]
@@ -132,6 +146,15 @@ class Activity:
             output=[],
             samples=[],
         )
+
+    def record_configuration(self, configuration):
+        self._data["coniguration"] = configuration
+
+    def record_input(self, url, comment):
+        self._data["input"].append(dict(url=url, comment=comment))
+
+    def record_output(self, url, comment):
+        self._data["output"].append(dict(url=url, comment=comment))
 
     def finish(self):
         self._data["stop"] = system_state()
