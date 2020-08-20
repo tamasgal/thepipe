@@ -65,7 +65,7 @@ class Module:
         self.services = ServiceManager()
         self.provided_services = {}
         self.required_services = {}
-        self.parameters = parameters
+        self._parameters = parameters
         self._processed_parameters = []
         self.only_if = set()
         self.every = 1
@@ -108,6 +108,14 @@ class Module:
         """The name of the module"""
         return self._name
 
+    @property
+    def parameters(self):
+        return self._parameters
+
+    @property
+    def processed_parameters(self):
+        return self._processed_parameters
+
     def add(self, name, value):
         """Add the parameter with the desired value to the dict"""
         self.parameters[name] = value
@@ -115,7 +123,7 @@ class Module:
     def get(self, name, default=None):
         """Return the value of the requested parameter or `default` if None."""
         value = self.parameters.get(name)
-        self._processed_parameters.append(name)
+        self.processed_parameters.append(name)
         if value is None:
             return default
         return value
@@ -165,7 +173,7 @@ class Module:
     def _check_unused_parameters(self):
         """Check if any of the parameters passed in are ignored"""
         all_params = set(self.parameters.keys())
-        processed_params = set(self._processed_parameters)
+        processed_params = set(self.processed_parameters)
         unused_params = all_params - processed_params - RESERVED_ARGS
 
         if unused_params:
