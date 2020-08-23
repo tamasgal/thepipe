@@ -53,9 +53,17 @@ class TestProvenance(unittest.TestCase):
         assert p.current_activity.provenance["configuration"]["b"] == 2
         assert p.current_activity.provenance["configuration"]["a"] == 1
 
-    def test_to_json(self):
+    def test_as_json(self):
         p = Provenance()
         p.start_activity("test")
+        p.as_json()
+
+    def test_as_json_with_non_serialisable_objects_doesnt_fail(self):
+        p = Provenance()
+        class Foo: pass
+        uuid = p.start_activity("test")
+        p.record_configuration({"a": Foo()})
+        p.finish_activity(uuid)
         p.as_json()
 
     def test_context_manager(self):

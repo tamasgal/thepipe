@@ -176,7 +176,16 @@ class Provenance(metaclass=Singleton):
 
     def as_json(self, **kwargs):
         """Dump provenance as JSON string. `kwargs` are passed to `json.dumps`"""
-        return json.dumps(self.provenance, **kwargs)
+        def fallback(obj):
+            """Objects which cannot be serialised"""
+            if isinstance(obj, set):
+                return list(obj)
+            try:
+                return obj.__class__.__name__ + " instance"
+            except (AttributeError, ValueError, TypeError):
+                pass
+
+        return json.dumps(self.provenance, default=fallback, **kwargs)
 
     def _export(self, outfile):
         """Writes the provenance information into outfile
