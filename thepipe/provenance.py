@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Provenance tracking inspired by the ctapipe approach.
+
+"""
 from datetime import datetime
 from importlib import import_module
 import json
