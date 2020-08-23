@@ -420,9 +420,13 @@ class Pipeline:
         self.provenance.current_activity.record_configuration({"planned_cycles": cycles})
         module_parameters = []
         for module in self.modules:
+            try:
+                parameters = module.parameters
+            except AttributeError:
+                parameters = None
             module_parameters.append(dict(
                 name=module.name,
-                parameters=module.parameters
+                parameters=parameters
             ))
         self.provenance.current_activity.record_configuration({"modules": module_parameters})
 

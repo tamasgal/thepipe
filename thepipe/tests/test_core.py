@@ -5,6 +5,7 @@ from unittest import TestCase
 from mock import MagicMock
 
 from thepipe.core import Pipeline, Module, Blob
+from thepipe import Provenance
 
 __author__ = "Tamas Gal"
 __credits__ = []
@@ -834,3 +835,39 @@ class TestServices(TestCase):
 
         args, kwargs = self.pl.log.critical.call_args_list[0]
         assert 'a_function, b_function, c_function' == args[1]
+
+
+class TestPipelineProvenance(TestCase):
+    def test_provenance(self):
+        Provenance().reset()
+
+        n_cycles = 10
+
+        class ModuleA(Module):
+            def configure(self):
+                self.get("a")
+                self.get("b")
+                self.require("c")
+
+        class ModuleB(Module):
+            def configure(self):
+                self.get("d")
+                self.get("e")
+
+        def a_function_module(blob):
+            return blob
+
+        pipe = Pipeline()
+        pipe.attach(ModuleA, a=1, b=2, c=3)
+        pipe.attach(ModuleB, d=4)
+        pipe.attach(a_function_module)
+        pipe.attach(ModuleA, name="ModuleC", c=5)
+        pipe.drain(n_cycles)
+
+        provenance = Provenance().backlog[0].provenance
+
+        assert n_cycles == provenance["configuration"]["planned_cycles"]
+        assert n_cycles == provenance["configuration"]["cycles"]
+        assert 4 == len(provenance["configuration"]["modules"])
+        module_names = [m["name"] for m in provenance["configuration"]["modules"]]
+        self.assertListEqual(module_names, ["ModuleA", "ModuleB", "a_function_module", "ModuleC"])
