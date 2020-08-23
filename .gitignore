@@ -68,3 +68,6 @@ reports
 # venv, pyenv
 .python-version
 venv
+
+# misc
+.provenance_*

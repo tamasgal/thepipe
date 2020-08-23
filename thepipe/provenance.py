@@ -3,6 +3,7 @@
 Provenance tracking inspired by the ctapipe approach.
 
 """
+import atexit
 from contextlib import contextmanager
 from datetime import datetime
 from functools import lru_cache
@@ -103,6 +104,26 @@ class Provenance(metaclass=Singleton):
         log.info("Initialising provenance tracking")
         self._activities = []
         self._backlog = []
+        self._outfile = ".provenance_" + str(uuid.uuid4()) + ".json"
+
+        self._main_activity_uuid = self.start_activity("main session")
+
+        atexit.register(self._export, self.outfile)
+
+    @property
+    def outfile(self):
+        return self._outfile
+
+    @outfile.setter
+    def outfile(self, outfile):
+        """The file to save the full provenance information"""
+        if outfile is not None and os.path.exists(outfile):
+            log.warning(
+                "Provenance output file ({}) exists and will be overwritten upon exit.".format(
+                    outfile
+                )
+            )
+        self._outfile = outfile
 
     def start_activity(self, name):
         """Starts a new activity and returns its UUID for future reference"""
@@ -157,8 +178,24 @@ class Provenance(metaclass=Singleton):
         """Dump provenance as JSON string. `kwargs` are passed to `json.dumps`"""
         return json.dumps(self.provenance, **kwargs)
 
+    def _export(self, outfile):
+        """Writes the provenance information into outfile
+
+        This function is called automatically upon exit, no manual call is required.
+        """
+        if outfile is None:
+            return
+        try:
+            self.finish_activity(self._main_activity_uuid)
+        except ValueError:
+            log.warning("Could not finish the main session.")
+        print("Provenance information has been written to '{}'".format(outfile))
+        with open(outfile, "w") as fobj:
+            fobj.write(self.as_json(indent=2))
+
     def reset(self):
         log.info("Resetting provenance")
+        atexit.unregister(self._export)
         self._activities = []
         self._backlog = []
 
