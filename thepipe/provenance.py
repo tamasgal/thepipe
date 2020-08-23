@@ -16,6 +16,7 @@ import types
 import uuid
 
 from pip._internal.operations import freeze
+from dateutil.parser import isoparse
 
 from .logger import get_logger
 from .tools import peak_memory_usage
@@ -99,7 +100,7 @@ class Provenance(metaclass=Singleton):
         log.info("Starting activity '{}'".format(name))
         self._activities.append(Activity(name))
 
-    def finish_activity(self):
+    def finish_activity(self, status="completed"):
         try:
             activity = self._activities.pop()
         except IndexError:
@@ -162,6 +163,7 @@ class Activity:
             input=[],
             output=[],
             samples=[],
+            status="unfinished",
         )
 
     def record_configuration(self, configuration):
@@ -173,8 +175,10 @@ class Activity:
     def record_output(self, url, comment):
         self._data["output"].append(dict(url=url, comment=comment))
 
-    def finish(self):
+    def finish(self, status):
         self._data["stop"] = system_state()
+        self._data["status"] = status
+        self._data["duration"] = duration(self._data["start"]["time_utc"], self._data["stop"]["time_utc"])
 
     @property
     def provenance(self):
@@ -227,3 +231,8 @@ def system_provenance():
         ),
         start_time_utc=now(),
     )
+
+
+def duration(start, stop):
+    """Return the duration in seconds between two ISO 8601 time strings in"""
+    return (isoparse(stop) - isoparse(start)).total_seconds()
