@@ -3,6 +3,10 @@ Unreleased changes
 
 Version 1
 ---------
+1.3.1 / 2020-08-23
+~~~~~~~~~~~~~~~~~~~
+* Fixes parsing when non-JSON-serialisable items in provenance are present
+
 1.3.0 / 2020-08-23
 ~~~~~~~~~~~~~~~~~~~
 * Provenance is now automatically tracked
