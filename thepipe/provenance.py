@@ -111,17 +111,19 @@ class Provenance(metaclass=Singleton):
         @atexit.register
         def cleanup():
             self.finish_activity(main_activity_uuid)
+            if self._outfile is None:
+                return
             with open(self._outfile, "w") as fobj:
                 fobj.write(self.as_json(indent=2))
 
     @property
     def outfile(self):
-        return _outfile
+        return self._outfile
 
     @outfile.setter
     def outfile(self, outfile):
         """The file to save the full provenance information"""
-        if os.path.exists(outfile):
+        if outfile is not None and os.path.exists(outfile):
             log.warning("Provenance output file ({}) exists and will be overwritten upon exit.".format(outfile))
         self._outfile = outfile
 
