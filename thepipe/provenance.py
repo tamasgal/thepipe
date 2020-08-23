@@ -3,6 +3,7 @@
 Provenance tracking inspired by the ctapipe approach.
 
 """
+import atexit
 from contextlib import contextmanager
 from datetime import datetime
 from functools import lru_cache
@@ -103,6 +104,26 @@ class Provenance(metaclass=Singleton):
         log.info("Initialising provenance tracking")
         self._activities = []
         self._backlog = []
+        self._outfile = str(uuid.uuid4()) + ".json"
+
+        main_activity_uuid = self.start_activity("main session")
+
+        @atexit.register
+        def cleanup():
+            self.finish_activity(main_activity_uuid)
+            with open(self._outfile, "w") as fobj:
+                fobj.write(self.as_json(indent=2))
+
+    @property
+    def outfile(self):
+        return _outfile
+
+    @outfile.setter
+    def outfile(self, outfile):
+        """The file to save the full provenance information"""
+        if os.path.exists(outfile):
+            log.warning("Provenance output file ({}) exists and will be overwritten upon exit.".format(outfile))
+        self._outfile = outfile
 
     def start_activity(self, name):
         """Starts a new activity and returns its UUID for future reference"""

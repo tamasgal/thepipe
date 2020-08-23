@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import tempfile
 import unittest
 from thepipe import Provenance
 
@@ -62,3 +63,12 @@ class TestProvenance(unittest.TestCase):
         with p.activity("test"):
             p.record_input("whatever.file")
         assert "test" in [b.name for b in p.backlog]
+
+
+    def test_outfile(self):
+        p = Provenance()
+        p.reset()
+
+        fobj = tempfile.NamedTemporaryFile(delete=True)
+
+        p.outfile = fobj.name
