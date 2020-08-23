@@ -34,6 +34,8 @@ Features
 --------
 
 - Easy to use interface and integration into existing workflows
+- Automatic provenance tracking and export (can be disabled with
+  ``thepipe.disable_provenance()``)
 - Modules can be either subclasses of ``Module`` or bare python functions
 - Data is passed via a simple Python dictionary from module to module (wrapped
   in a class called ``Blob`` which adds some visual candy and error reporting)
