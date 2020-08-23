@@ -1,3 +1,6 @@
+python-dateutil
 numpy
+psutil
+pytz
 setuptools_scm
 toml
