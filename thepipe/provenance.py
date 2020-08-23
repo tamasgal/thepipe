@@ -3,6 +3,7 @@
 Provenance tracking inspired by the ctapipe approach.
 
 """
+from contextlib import contextmanager
 from datetime import datetime
 from importlib import import_module
 import json
@@ -106,26 +107,38 @@ class Provenance(metaclass=Singleton):
             return
         else:
             log.info("Finishing activity '{}'".format(activity.name))
-            activity.finish()
+            activity.finish(status)
             self._backlog.append(activity)
 
     def record_configuration(self, configuration):
         """Add configuration parameters (e.g. of the pipeline)"""
         self.current_activity.add_configuration(configuration)
 
-    def record_input(self, url, comment):
+    def record_input(self, url, comment=""):
         self.current_activity.record_input(url, comment)
 
-    def record_output(self, url, comment):
+    def record_output(self, url, comment=""):
         self.current_activity.record_output(url, comment)
 
     @property
     def current_activity(self):
+        if not self._activities:
+            self.start_activity(name=sys.executable)
         return self._activities[-1]
+
+    @contextmanager
+    def activity(self, name):
+        self.start_activity(name)
+        yield
+        self.finish_activity(name)
 
     @property
     def provenance(self):
         return [a.provenance for a in self._backlog]
+
+    @property
+    def backlog(self):
+        return self._backlog
 
     def as_json(self, **kwargs):
         """Dump provenance as JSON string. `kwargs` are passed to `json.dumps`"""
