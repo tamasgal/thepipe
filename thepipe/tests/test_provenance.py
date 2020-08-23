@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import tempfile
 import unittest
-from thepipe import Provenance
+from thepipe import Provenance, disable_provenance
 
 
 class TestProvenance(unittest.TestCase):
@@ -68,7 +68,13 @@ class TestProvenance(unittest.TestCase):
     def test_outfile(self):
         p = Provenance()
         p.reset()
-
         fobj = tempfile.NamedTemporaryFile(delete=True)
+        p._export(fobj.name)
+        assert open(fobj.name, "r").read() == p.as_json(indent=2)
 
-        p.outfile = fobj.name
+    def test_outfile_is_not_written_when_disabled(self):
+        p = Provenance()
+        p.reset()
+        assert p.outfile is not None
+        disable_provenance()
+        assert p.outfile is None
