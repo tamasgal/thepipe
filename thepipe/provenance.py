@@ -129,6 +129,9 @@ class Provenance(metaclass=Singleton):
         """Starts a new activity and returns its UUID for future reference"""
         log.info("Starting activity '{}'".format(name))
         activity = _Activity(name)
+        if self._activities:
+            activity._data["parent_activity"] = self.current_activity.uuid
+            self.current_activity._data["child_activities"].append(activity.uuid)
         self._activities.append(activity)
         return activity.uuid
 
@@ -215,6 +218,8 @@ class _Activity:
         self._data = dict(
             uuid=str(uuid.uuid4()),
             name=name,
+            parent_activity=None,
+            child_activities=[],
             start=system_state(),
             stop={},
             system=system_provenance(),

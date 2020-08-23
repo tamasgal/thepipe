@@ -6,6 +6,7 @@ Version 1
 1.3.2 / 2020-08-23
 ~~~~~~~~~~~~~~~~~~~
 * The pipeline activity is now created in init instead of drain
+* Adds child/parent activity tracking
 
 1.3.1 / 2020-08-23
 ~~~~~~~~~~~~~~~~~~~
