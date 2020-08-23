@@ -58,8 +58,12 @@ def python_packages():
     """
     packages = []
     for entry in freeze.freeze(exclude_editable=True):
-        name, version = entry.split("==")
-        packages.append(dict(name=name, version=version))
+        try:
+            name, version = entry.split("==")
+        except ValueError:
+            pass
+        else:
+            packages.append(dict(name=name, version=version))
     return packages
 
 

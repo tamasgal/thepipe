@@ -3,6 +3,9 @@ Unreleased changes
 
 Version 1
 ---------
+1.2.1 / 2020-08-23
+~~~~~~~~~~~~~~~~~~~
+* Hotfix for python package discovery via pip
 
 1.2.0 / 2020-08-23
 ~~~~~~~~~~~~~~~~~~~
