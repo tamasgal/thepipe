@@ -212,6 +212,7 @@ class Pipeline:
         self.log = get_logger(self.__class__.__name__)
         self.cprint = get_printer(self.__class__.__name__)
         self.provenance = Provenance()
+        self._activity_uuid = self.provenance.start_activity("pipeline")
 
         if configfile is None and os.path.exists(MODULE_CONFIGURATION):
             configfile = MODULE_CONFIGURATION
@@ -416,7 +417,9 @@ class Pipeline:
 
     def drain(self, cycles=None):
         """Execute _drain while trapping KeyboardInterrupt"""
-        activity_uuid = self.provenance.start_activity("pipeline")
+        if self._finished:
+            self.log.error("The pipeline has already been drained...")
+            return
         self.provenance.current_activity.record_configuration({"planned_cycles": cycles})
         module_parameters = []
         for module in self.modules:
@@ -432,7 +435,7 @@ class Pipeline:
 
         if not self._check_service_requirements():
             self.init_timer.stop()
-            self.provenance.finish_activity(activity_uuid, "error")
+            self.provenance.finish_activity(self._activity_uuid, "error")
             return self.finish()
 
         self.log.info("Preparing modules to process")
@@ -449,7 +452,7 @@ class Pipeline:
 
         self.provenance.current_activity.record_configuration({"cycles": self._cycle_count})
 
-        self.provenance.finish_activity(activity_uuid)
+        self.provenance.finish_activity(self._activity_uuid)
 
         return results
 

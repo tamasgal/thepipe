@@ -53,6 +53,19 @@ class TestProvenance(unittest.TestCase):
         assert p.current_activity.provenance["configuration"]["b"] == 2
         assert p.current_activity.provenance["configuration"]["a"] == 1
 
+    def test_parent_child_activities(self):
+        p = Provenance()
+        parent_uuid = p.current_activity.uuid
+        first = p.start_activity("first")
+        assert parent_uuid == p.current_activity._data["parent_activity"]
+        p.finish_activity(first)
+        second = p.start_activity("second")
+        assert parent_uuid == p.current_activity._data["parent_activity"]
+        p.finish_activity(second)
+
+        assert first in p.current_activity._data["child_activities"]
+        assert second in p.current_activity._data["child_activities"]
+
     def test_as_json(self):
         p = Provenance()
         p.start_activity("test")
@@ -71,7 +84,6 @@ class TestProvenance(unittest.TestCase):
         with p.activity("test"):
             p.record_input("whatever.file")
         assert "test" in [b.name for b in p.backlog]
-
 
     def test_outfile(self):
         p = Provenance()
