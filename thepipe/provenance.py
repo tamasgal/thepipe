@@ -5,15 +5,15 @@ Provenance tracking inspired by the ctapipe approach.
 """
 from contextlib import contextmanager
 from datetime import datetime
+from functools import lru_cache
 from importlib import import_module
 import json
 import os
 import platform
+import sys
+import uuid
 import psutil
 import pytz
-import sys
-import types
-import uuid
 
 from pip._internal.operations import freeze
 from dateutil.parser import isoparse
@@ -50,8 +50,12 @@ ENV_VARS_IN_CI_TO_LOG = [
 log = get_logger("Provenance")
 
 
+@lru_cache(maxsize=None)
 def python_packages():
-    """All installed Python packages"""
+    """All installed Python packages.
+
+    LRU cached, assuming no package installations during runtime.
+    """
     packages = []
     for entry in freeze.freeze(exclude_editable=True):
         name, version = entry.split("==")
@@ -97,23 +101,27 @@ class Provenance(metaclass=Singleton):
         self._backlog = []
 
     def start_activity(self, name):
+        """Starts a new activity and returns its UUID for future reference"""
         log.info("Starting activity '{}'".format(name))
-        self._activities.append(Activity(name))
+        activity = _Activity(name)
+        self._activities.append(activity)
+        return activity.uuid
 
-    def finish_activity(self, status="completed"):
-        try:
-            activity = self._activities.pop()
-        except IndexError:
-            log.error("There is no activity to finish.")
-            return
+    def finish_activity(self, uuid, status="completed"):
+        """Finishes an activity with the given UUID"""
+        for idx, activity in enumerate(self._activities):
+            if activity.uuid == uuid:
+                self._activities.pop(idx)
+                log.info("Finishing activity '{}'".format(activity.name))
+                activity.finish(status)
+                self._backlog.append(activity)
+                break
         else:
-            log.info("Finishing activity '{}'".format(activity.name))
-            activity.finish(status)
-            self._backlog.append(activity)
+            raise ValueError("Unable to finish activity, no matching UUID found.")
 
     def record_configuration(self, configuration):
-        """Add configuration parameters (e.g. of the pipeline)"""
-        self.current_activity.add_configuration(configuration)
+        """Record configuration parameters (e.g. of the pipeline)"""
+        self.current_activity.record_configuration(configuration)
 
     def record_input(self, url, comment=""):
         self.current_activity.record_input(url, comment)
@@ -129,9 +137,9 @@ class Provenance(metaclass=Singleton):
 
     @contextmanager
     def activity(self, name):
-        self.start_activity(name)
+        activity_uuid = self.start_activity(name)
         yield
-        self.finish_activity(name)
+        self.finish_activity(activity_uuid)
 
     @property
     def provenance(self):
@@ -151,7 +159,7 @@ class Provenance(metaclass=Singleton):
         self._backlog = []
 
 
-class Activity:
+class _Activity:
     def __init__(self, name):
         self.name = name
         self._data = dict(
@@ -164,10 +172,16 @@ class Activity:
             output=[],
             samples=[],
             status="unfinished",
+            configuration={},
         )
 
+    @property
+    def uuid(self):
+        return self._data["uuid"]
+
     def record_configuration(self, configuration):
-        self._data["coniguration"] = configuration
+        """Records or updates configuration"""
+        self._data["configuration"].update(configuration)
 
     def record_input(self, url, comment):
         self._data["input"].append(dict(url=url, comment=comment))
@@ -178,7 +192,9 @@ class Activity:
     def finish(self, status):
         self._data["stop"] = system_state()
         self._data["status"] = status
-        self._data["duration"] = duration(self._data["start"]["time_utc"], self._data["stop"]["time_utc"])
+        self._data["duration"] = duration(
+            self._data["start"]["time_utc"], self._data["stop"]["time_utc"]
+        )
 
     @property
     def provenance(self):

@@ -18,6 +18,7 @@ import numpy as np
 
 from .tools import peak_memory_usage, ignored, Timer
 from .logger import get_logger, get_printer
+from .provenance import Provenance
 
 __author__ = "Tamas Gal"
 __credits__ = ["Moritz Lotze", "Thomas Heid", "Johannes Schumann"]
@@ -210,6 +211,7 @@ class Pipeline:
                  stats_limit=100000):
         self.log = get_logger(self.__class__.__name__)
         self.cprint = get_printer(self.__class__.__name__)
+        self.provenance = Provenance()
 
         if configfile is None and os.path.exists(MODULE_CONFIGURATION):
             configfile = MODULE_CONFIGURATION
@@ -414,8 +416,19 @@ class Pipeline:
 
     def drain(self, cycles=None):
         """Execute _drain while trapping KeyboardInterrupt"""
+        activity_uuid = self.provenance.start_activity("pipeline")
+        self.provenance.current_activity.record_configuration({"planned_cycles": cycles})
+        module_parameters = []
+        for module in self.modules:
+            module_parameters.append(dict(
+                name=module.name,
+                parameters=module.parameters
+            ))
+        self.provenance.current_activity.record_configuration({"modules": module_parameters})
+
         if not self._check_service_requirements():
             self.init_timer.stop()
+            self.provenance.finish_activity(activity_uuid, "error")
             return self.finish()
 
         self.log.info("Preparing modules to process")
@@ -428,7 +441,13 @@ class Pipeline:
         self.log.info("Trapping CTRL+C and starting to drain.")
         signal.signal(signal.SIGINT, self._handle_ctrl_c)
         with ignored(KeyboardInterrupt):
-            return self._drain(cycles)
+            results = self._drain(cycles)
+
+        self.provenance.current_activity.record_configuration({"cycles": self._cycle_count})
+
+        self.provenance.finish_activity(activity_uuid)
+
+        return results
 
     def finish(self):
         """Call finish() on each attached module"""
@@ -455,6 +474,7 @@ class Pipeline:
         """Handle the keyboard interrupts."""
         if self._stop:
             print("\nForced shutdown...")
+            self.provenance.current_activity.record_configuration({"forced_shutdown": True})
             raise SystemExit
         if not self._stop:
             hline = 42 * '='
@@ -462,6 +482,7 @@ class Pipeline:
                   "Press CTRL+C again if you're in hurry!\n" + hline)
             self.was_interrupted = True
             self._stop = True
+            self.provenance.current_activity.record_configuration({"interrupted": True})
 
     def _print_timeit_statistics(self):
 
