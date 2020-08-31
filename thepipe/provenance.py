@@ -104,7 +104,7 @@ class Provenance(metaclass=Singleton):
         log.info("Initialising provenance tracking")
         self._activities = []
         self._backlog = []
-        self._outfile = ".provenance_" + str(uuid.uuid4()) + ".json"
+        self._outfile = None
 
         self._main_activity_uuid = self.start_activity("main session")
 

@@ -4,8 +4,3 @@ from .provenance import Provenance
 
 
 Provenance()  # automatic provenance tracking by default
-
-
-def disable_provenance():
-    """Disables the automatic provenance export."""
-    Provenance().outfile = None

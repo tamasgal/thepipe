@@ -1,5 +1,6 @@
 Unreleased changes
 ------------------
+* Don't write provenance information automatically
 
 Version 1
 ---------
