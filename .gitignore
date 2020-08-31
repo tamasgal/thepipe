@@ -3,30 +3,11 @@ __pycache__/
 *.py[cod]
 *.pyxbldc
 
-# Version info for PyPI
-thepipe/version.txt
-
-# Distribution / packaging
-.Python
-env/
-bin/
-build/
-develop-eggs/
 dist/
-eggs/
-lib/
-lib64/
-parts/
 sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-.eggs
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+*.egg-info
+*.eggs
+venv
 
 # Unit test / coverage reports
 htmlcov/
@@ -36,38 +17,10 @@ htmlcov/
 nosetests.xml
 coverage.xml
 .coverage.*
+.pytest_cache/
 
 # Sphinx documentation
 doc/_build/
 doc/auto_examples/
 doc/modules/
 doc/api
-
-# VI swap files
-*.swp
-*.swo
-
-# PyCharm files
-.idea
-
-# jupyter files
-.ipynb_checkpoints/
-
-# 
-junit*.xml
-reports
-
-# Editor backup files
-*~
-
-.pytest_cache/
-
-# Mac
-.DS_Store
-
-# venv, pyenv
-.python-version
-venv
-
-# misc
-.provenance_*
