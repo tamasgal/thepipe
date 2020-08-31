@@ -14,8 +14,10 @@ except ImportError:
 # so we can detect in __init__.py that it's called from setup.py
 builtins.__THEPIPE_SETUP__ = True
 
-with open('requirements/install.txt') as fobj:
-    requirements = [l.strip() for l in fobj.readlines()]
+requirements = {}
+for target in ["install", "dev"]:
+    with open("requirements/{}.txt".format(target)) as fobj:
+        requirements[target] = [l.strip() for l in fobj.readlines()]
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
@@ -35,7 +37,8 @@ setup(
         'write_to': 'thepipe/version.txt',
         'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
     },
-    install_requires=requirements,
+    install_requires=requirements.pop("install"),
+    extras_require=requirements,
     python_requires='>=3.5',
     classifiers=[
         'Intended Audience :: Developers',
