@@ -33,10 +33,7 @@ setup(
     include_package_data=True,
     platforms='any',
     setup_requires=['setuptools_scm'],
-    use_scm_version={
-        'write_to': 'thepipe/version.txt',
-        'tag_regex': r'^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$',
-    },
+    use_scm_version=True,
     install_requires=requirements.pop("install"),
     extras_require=requirements,
     python_requires='>=3.5',
