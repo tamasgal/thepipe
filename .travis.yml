@@ -9,7 +9,6 @@ python:
   - "3.8"
 
 install:
-  - pip install -Ur requirements/dev.txt
   - make install-dev
 
 script:
