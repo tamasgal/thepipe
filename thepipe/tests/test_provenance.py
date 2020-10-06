@@ -90,4 +90,5 @@ class TestProvenance(unittest.TestCase):
         p.reset()
         fobj = tempfile.NamedTemporaryFile(delete=True)
         p.outfile = fobj.name
+        p._export()
         assert open(fobj.name, "r").read() == p.as_json(indent=2)
