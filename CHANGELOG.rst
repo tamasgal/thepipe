@@ -4,6 +4,14 @@ Unreleased changes
 
 Version 1
 ---------
+1.3.4 / 2020-10-06
+~~~~~~~~~~~~~~~~~~~
+* Fixed a bug where provenance was not exported automatically
+
+1.3.3 / 2020-09-10
+~~~~~~~~~~~~~~~~~~~
+* Bugfixes
+
 1.3.2 / 2020-08-23
 ~~~~~~~~~~~~~~~~~~~
 * The pipeline activity is now created in init instead of drain
