@@ -32,6 +32,30 @@ class TestProvenance(unittest.TestCase):
         assert "in.file" == p.current_activity.provenance["input"][0]["url"]
         assert "out.file" == p.current_activity.provenance["output"][0]["url"]
 
+    def test_record_input_sets_uuid_to_none_by_default(self):
+        p = Provenance()
+        p.start_activity("test")
+        p.record_input("in.file")
+        assert p.current_activity.provenance["input"][0]["uuid"] is None
+
+    def test_record_output_sets_uuid_by_default(self):
+        p = Provenance()
+        p.start_activity("test")
+        p.record_output("out.file")
+        assert p.current_activity.provenance["output"][0]["uuid"] is not None
+
+    def test_record_input_sets_uuid(self):
+        p = Provenance()
+        p.start_activity("test")
+        p.record_input("out.file", uuid="abc")
+        assert "abc" == p.current_activity.provenance["input"][0]["uuid"]
+
+    def test_record_output_sets_uuid(self):
+        p = Provenance()
+        p.start_activity("test")
+        p.record_output("out.file", uuid="abc")
+        assert "abc" == p.current_activity.provenance["output"][0]["uuid"]
+
     def test_record_configuration(self):
         p = Provenance()
         p.start_activity("test")
