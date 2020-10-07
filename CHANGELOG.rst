@@ -4,6 +4,11 @@ Unreleased changes
 
 Version 1
 ---------
+1.3.5 / 2020-10-07
+~~~~~~~~~~~~~~~~~~~
+* Provenance now tracks (and adds if not provided) the UUIDs of
+  input and output entries in activities
+
 1.3.4 / 2020-10-06
 ~~~~~~~~~~~~~~~~~~~
 * Fixed a bug where provenance was not exported automatically
