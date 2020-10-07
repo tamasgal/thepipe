@@ -12,7 +12,7 @@ import json
 import os
 import platform
 import sys
-import uuid
+from uuid import uuid4
 import psutil
 import pytz
 
@@ -151,11 +151,13 @@ class Provenance(metaclass=Singleton):
         """Record configuration parameters (e.g. of the pipeline)"""
         self.current_activity.record_configuration(configuration)
 
-    def record_input(self, url, comment=""):
-        self.current_activity.record_input(url, comment)
+    def record_input(self, url, uuid=None, comment=""):
+        self.current_activity.record_input(url, uuid, comment)
 
-    def record_output(self, url, comment=""):
-        self.current_activity.record_output(url, comment)
+    def record_output(self, url, uuid=None, comment=""):
+        if uuid is None:
+            uuid = str(uuid4())
+        self.current_activity.record_output(url, uuid, comment)
 
     @property
     def current_activity(self):
@@ -216,7 +218,7 @@ class _Activity:
     def __init__(self, name):
         self.name = name
         self._data = dict(
-            uuid=str(uuid.uuid4()),
+            uuid=str(uuid4()),
             name=name,
             parent_activity=None,
             child_activities=[],
@@ -238,11 +240,11 @@ class _Activity:
         """Records or updates configuration"""
         self._data["configuration"].update(configuration)
 
-    def record_input(self, url, comment):
-        self._data["input"].append(dict(url=url, comment=comment))
+    def record_input(self, url, uuid, comment):
+        self._data["input"].append(dict(url=url, uuid=uuid, comment=comment))
 
-    def record_output(self, url, comment):
-        self._data["output"].append(dict(url=url, comment=comment))
+    def record_output(self, url, uuid, comment):
+        self._data["output"].append(dict(url=url, uuid=uuid, comment=comment))
 
     def finish(self, status):
         self._data["stop"] = system_state()
