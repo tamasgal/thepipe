@@ -610,7 +610,8 @@ class TestPipelineConfigurationViaFile(TestCase):
                    b"FOO = 1\n"
                    b"[Narf]\n"
                    b"bar = 'FOO'\n"
-                   b"fjoord = 2")
+                   b"fjoord = 2\n"
+                   b"argh = [1, 2, 3]")
         fobj.flush()
         fname = str(fobj.name)
 
