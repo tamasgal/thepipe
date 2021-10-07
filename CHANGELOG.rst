@@ -1,9 +1,14 @@
 Unreleased changes
 ------------------
-* Don't write provenance information automatically
 
 Version 1
 ---------
+1.3.6 / 2021-10-07
+~~~~~~~~~~~~~~~~~~~
+* Don't write provenance information automatically
+* Fixes a bug which caused problem in variable extraction of
+  configuration files when non-hashable values were used
+
 1.3.5 / 2020-10-07
 ~~~~~~~~~~~~~~~~~~~
 * Provenance now tracks (and adds if not provided) the UUIDs of
