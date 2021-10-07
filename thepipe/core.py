@@ -251,8 +251,7 @@ class Pipeline:
             if variables is not None:
                 for _, entries in config.items():
                     for key, value in entries.items():
-                        print(key, value)
-                        if value in variables:
+                        if isinstance(value, str) and value in variables:
                             entries[key] = variables[value]
         else:
             config = {}
