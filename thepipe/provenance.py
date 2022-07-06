@@ -13,6 +13,7 @@ import os
 import platform
 import sys
 from uuid import uuid4
+from pathlib import Path
 import psutil
 import pytz
 
@@ -203,9 +204,13 @@ class Provenance(metaclass=Singleton):
             self.finish_activity(self._main_activity_uuid)
         except ValueError:
             log.warning("Could not finish the main session.")
-        print("Provenance information has been written to '{}'".format(self.outfile))
+
+        output_path = os.path.dirname(self.outfile)
+        Path(output_path).mkdir(parents=True, exist_ok=True)
+
         with open(self.outfile, "w") as fobj:
             fobj.write(self.as_json(indent=2))
+        print("Provenance information has been written to '{}'".format(self.outfile))
 
     def reset(self):
         log.info("Resetting provenance")
