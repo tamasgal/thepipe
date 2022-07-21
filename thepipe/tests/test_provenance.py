@@ -2,6 +2,7 @@
 import tempfile
 import unittest
 from thepipe import Provenance
+from thepipe.provenance import system_provenance
 
 
 class TestProvenance(unittest.TestCase):
@@ -89,6 +90,9 @@ class TestProvenance(unittest.TestCase):
 
         assert first in p.current_activity._data["child_activities"]
         assert second in p.current_activity._data["child_activities"]
+
+    def test_python_packages_are_included(self):
+        assert 1 < len(system_provenance()["python"]["packages"])
 
     def test_as_json(self):
         p = Provenance()

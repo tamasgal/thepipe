@@ -14,10 +14,10 @@ import platform
 import sys
 from uuid import uuid4
 from pathlib import Path
+import pkg_resources
 import psutil
 import pytz
 
-from pip._internal.operations import freeze
 from dateutil.parser import isoparse
 
 from .logger import get_logger
@@ -59,13 +59,15 @@ def python_packages():
     LRU cached, assuming no package installations during runtime.
     """
     packages = []
-    for entry in freeze.freeze(exclude_editable=True):
-        try:
-            name, version = entry.split("==")
-        except ValueError:
-            pass
-        else:
-            packages.append(dict(name=name, version=version))
+
+    installed_packages_list = sorted(
+        ["%s==%s" % (i.key, i.version) for i in pkg_resources.working_set]
+    )
+
+    for package in installed_packages_list:
+        name, version = package.split("==")
+        packages.append(dict(name=name, version=version))
+
     return packages
 
 
