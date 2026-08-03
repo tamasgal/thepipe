@@ -16,7 +16,7 @@ import sys
 import os
 from datetime import date
 import sphinx_rtd_theme
-from pkg_resources import get_distribution
+from importlib.metadata import version as get_version
 
 # what is this?
 # sys.path.append('../')
@@ -73,7 +73,7 @@ master_doc = 'index'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 # The full version, including alpha/beta/rc tags.
-release = get_distribution('thepipe').version
+release = get_version('thepipe')
 # The short X.Y version.
 version = '.'.join(release.split('.')[:2])
 

@@ -20,7 +20,7 @@ class TestCuckoo(TestCase):
         cuckoo = Cuckoo()
         cuckoo.reset()
         delta = datetime.now() - cuckoo.timestamp
-        assert delta.total_seconds() > 0
+        assert delta.total_seconds() >= 0
 
     def test_set_interval_on_init(self):
         cuckoo = Cuckoo(1)

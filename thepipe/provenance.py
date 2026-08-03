@@ -8,13 +8,13 @@ from contextlib import contextmanager
 from datetime import datetime
 from functools import lru_cache
 from importlib import import_module
+from importlib.metadata import distributions
 import json
 import os
 import platform
 import sys
 from uuid import uuid4
 from pathlib import Path
-import pkg_resources
 import psutil
 import pytz
 
@@ -60,15 +60,13 @@ def python_packages():
     """
     packages = []
 
-    installed_packages_list = sorted(
-        ["%s==%s" % (i.key, i.version) for i in pkg_resources.working_set]
-    )
+    for dist in distributions():
+        name = dist.metadata["Name"]
+        if name is None:  # broken/incomplete dist-info in the environment
+            continue
+        packages.append(dict(name=name.lower(), version=dist.version))
 
-    for package in installed_packages_list:
-        name, version = package.split("==")
-        packages.append(dict(name=name, version=version))
-
-    return packages
+    return sorted(packages, key=lambda p: (p["name"], p["version"]))
 
 
 def _getenv():
